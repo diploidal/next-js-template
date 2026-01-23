@@ -1,14 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": [
-    "unicorn",
-    "typescript",
-    "nextjs",
-    "react",
-    "node",
-    "unicorn",
-    "oxc"
-  ],
+  "plugins": ["unicorn", "typescript", "nextjs", "react", "node", "unicorn", "oxc"],
   "categories": {},
   "rules": {
     "constructor-super": "warn",
