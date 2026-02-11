@@ -9,6 +9,7 @@ A template to quickly bootstrap Next.js projects with modern tooling.
 - [Oxlint](https://github.com/oxc-project/oxc) - Fast linter
 - [Oxfmt](https://github.com/oxc-project/oxc) - Fast formatter
 - [Shadcn UI](https://ui.shadcn.com/) - UI components
+- [Next Themes](https://www.npmjs.com/package/next-themes) - Theme handling (Light, Dark, System)
 
 ## Getting Started
 
@@ -42,15 +43,15 @@ Components will be installed to `src/shadcn/ui/` with utilities in `src/lib/util
 
 ## Scripts
 
-| Command              | Description                    |
-| -------------------- | ------------------------------ |
-| `bun run dev`        | Start development server       |
-| `bun run build`      | Build for production           |
-| `bun run start`      | Start production server        |
-| `bun run lint`       | Run linter                     |
-| `bun run lint:fix`   | Run linter with auto-fix       |
-| `bun run format`     | Check formatting               |
-| `bun run format:fix` | Fix formatting                 |
+| Command              | Description              |
+| -------------------- | ------------------------ |
+| `bun run dev`        | Start development server |
+| `bun run build`      | Build for production     |
+| `bun run start`      | Start production server  |
+| `bun run lint`       | Run linter               |
+| `bun run lint:fix`   | Run linter with auto-fix |
+| `bun run format`     | Check formatting         |
+| `bun run format:fix` | Fix formatting           |
 
 ---
 

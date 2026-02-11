@@ -33,9 +33,7 @@ export default function RootLayout({
             <nav>
               <ThemeSwitch />
             </nav>
-            <main>
-              {children}
-            </main>
+            <main>{children}</main>
             <footer>
               <ThemeSwitch />
             </footer>

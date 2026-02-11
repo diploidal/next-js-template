@@ -4,7 +4,6 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/shadcn/ui/toggle-group";
 
-
 export const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
