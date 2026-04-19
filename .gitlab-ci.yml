@@ -103,6 +103,12 @@ build:validate:
 # Production build + deploy: runs only on main.
 build_deploy:vercel_production:
   <<: *build_config
+  needs:
+    - job: install_dependencies
+      optional: true
+    - lint
+    - format
+    - type-check
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
   resource_group: production
