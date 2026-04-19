@@ -22,7 +22,9 @@ export const ThemeSwitch = () => {
         value="light"
         aria-label="Toggle light theme"
         title="Toggle light theme"
-        onClick={() => setTheme("light")}
+        onClick={() => {
+          setTheme("light");
+        }}
         aria-checked={theme === "light"}
         data-state={theme === "light" ? "on" : "off"}
       >
@@ -32,7 +34,9 @@ export const ThemeSwitch = () => {
         value="dark"
         aria-label="Toggle dark theme"
         title="Toggle dark theme"
-        onClick={() => setTheme("dark")}
+        onClick={() => {
+          setTheme("dark");
+        }}
         aria-checked={theme === "dark"}
         data-state={theme === "dark" ? "on" : "off"}
       >
@@ -42,7 +46,9 @@ export const ThemeSwitch = () => {
         value="system"
         aria-label="Toggle system theme"
         title="Toggle system theme"
-        onClick={() => setTheme("system")}
+        onClick={() => {
+          setTheme("system");
+        }}
         aria-checked={theme === "system"}
         data-state={theme === "system" ? "on" : "off"}
       >

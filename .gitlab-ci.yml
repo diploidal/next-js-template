@@ -1,0 +1,120 @@
+image: oven/bun:latest
+
+stages:
+  - install
+  - quality
+  - build
+
+variables:
+  NEXT_TELEMETRY_DISABLED: "1"
+  GIT_DEPTH: 10
+  GIT_STRATEGY: fetch
+
+workflow:
+  auto_cancel:
+    on_new_commit: none
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - when: always
+
+cache:
+  key:
+    files:
+      - bun.lock
+  paths:
+    - node_modules/
+    - .next/cache/
+  policy: pull
+
+# ====================================================
+# INSTALL
+# ====================================================
+
+install_dependencies:
+  stage: install
+  script:
+    - bun install --frozen-lockfile
+  cache:
+    key:
+      files:
+        - bun.lock
+    paths:
+      - node_modules/
+      - .next/cache/
+    policy: pull-push
+
+# ====================================================
+# QUALITY
+# ====================================================
+
+.quality_template: &quality_config
+  stage: quality
+  needs:
+    - job: install_dependencies
+      optional: true
+
+lint:
+  <<: *quality_config
+  script:
+    - bun run lint
+
+format:
+  <<: *quality_config
+  script:
+    - bun run format
+
+type-check:
+  <<: *quality_config
+  script:
+    - bun run typecheck
+
+# ====================================================
+# BUILD
+# ====================================================
+
+.build_template: &build_config
+  stage: build
+  needs:
+    - job: install_dependencies
+      optional: true
+  cache:
+    key:
+      files:
+        - bun.lock
+    paths:
+      - node_modules/
+      - .next/cache/
+    policy: pull-push
+
+# Validation build: runs on all branches except main. No deploy.
+build:validate:
+  <<: *build_config
+  rules:
+    - if: $CI_COMMIT_BRANCH != "main"
+  script:
+    - echo "Running standard build for validation (no Vercel deploy)."
+    - bun run build
+  artifacts:
+    paths:
+      - .next/
+    expire_in: 1 day
+
+# Production build + deploy: runs only on main.
+build_deploy:vercel_production:
+  <<: *build_config
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  resource_group: production
+  script:
+    - echo "Building for Vercel Production..."
+    - bun install --global vercel
+    - vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+    - vercel build --prod --token=$VERCEL_TOKEN
+    - echo "Deploying prebuilt artifacts to Vercel..."
+    - vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
+  artifacts:
+    paths:
+      - .vercel/output
+      - .next/
+    expire_in: 1 day
