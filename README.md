@@ -29,6 +29,19 @@ bunx --bun shadcn@latest add button
 
 Components are installed to `src/components/ui/` with utilities in `src/lib/utils.ts`. See [Shadcn UI — Add Components](https://ui.shadcn.com/docs/installation/next#add-components).
 
+## Page Metadata
+
+The root layout defines `title.default` and `title.template`, so child pages only need to set their own title — Next.js appends the site name automatically:
+
+```ts
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "About" };
+// → <title>About | Next.js Template</title>
+```
+
+Use `title: { absolute: "…" }` to opt out of the template. See the [Next.js metadata docs](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#title).
+
 ## Scripts
 
 | Command              | Description                                     |
@@ -43,6 +56,7 @@ Components are installed to `src/components/ui/` with utilities in `src/lib/util
 | `bun run typecheck`  | Type-check with `tsc --noEmit`                  |
 | `bun run check`      | Lint + format-check + typecheck (CI-equivalent) |
 | `bun run check:fix`  | Lint auto-fix + format writes                   |
+| `bun run clean`      | Remove `.next/` build output                    |
 
 ---
 

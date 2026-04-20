@@ -18,6 +18,7 @@ Package manager is **Bun**; `next` is invoked through `bun --bun` so the Bun run
 | `bun run typecheck`  | `tsc --noEmit`                                  |
 | `bun run check`      | Lint + format-check + typecheck (CI-equivalent) |
 | `bun run check:fix`  | Lint autofix + format writes                    |
+| `bun run clean`      | Remove `.next/` build output                    |
 
 Install lockfile-strictly with `bun install --frozen-lockfile` (what CI does).
 

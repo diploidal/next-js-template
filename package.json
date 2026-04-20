@@ -12,7 +12,8 @@
     "format:fix": "oxfmt",
     "typecheck": "tsc --noEmit",
     "check": "bun run lint && bun run format && bun run typecheck",
-    "check:fix": "bun run lint:fix && bun run format:fix"
+    "check:fix": "bun run lint:fix && bun run format:fix",
+    "clean": "rm -rf .next"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
