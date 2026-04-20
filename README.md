@@ -27,7 +27,7 @@ To add Shadcn UI components:
 bunx --bun shadcn@latest add button
 ```
 
-Components are installed to `src/shadcn/ui/` with utilities in `src/lib/utils.ts`. See [Shadcn UI — Add Components](https://ui.shadcn.com/docs/installation/next#add-components).
+Components are installed to `src/components/ui/` with utilities in `src/lib/utils.ts`. See [Shadcn UI — Add Components](https://ui.shadcn.com/docs/installation/next#add-components).
 
 ## Scripts
 

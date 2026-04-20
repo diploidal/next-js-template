@@ -21,7 +21,7 @@ Package manager is **Bun**; `next` is invoked through `bun --bun` so the Bun run
 
 Install lockfile-strictly with `bun install --frozen-lockfile` (what CI does).
 
-Add shadcn components with `bunx --bun shadcn@latest add <name>` — they land in `src/shadcn/ui/` per `components.json`.
+Add shadcn components with `bunx --bun shadcn@latest add <name>` — they land in `src/components/ui/` per `components.json`.
 
 ## Architecture
 
@@ -31,8 +31,8 @@ Next.js 16 App Router + React 19 + TypeScript, styled with Tailwind v4 and shadc
 - **Path alias**: `@/*` → `src/*` (see `tsconfig.json`).
 - **Source layout** under `src/`:
   - `app/` — App Router entry (`layout.tsx`, `page.tsx`). Root layout wires `ThemeProvider`.
-  - `shadcn/ui/` — generated shadcn primitives. Aliases (`components.json`): `components → @/shadcn`, `ui → @/shadcn/ui`, `utils → @/lib/utils`, `lib → @/lib`, `hooks → @/hooks`.
-  - `components/` — app-specific components (not shadcn primitives).
+  - `components/ui/` — generated shadcn primitives. Aliases (`components.json`): `components → @/components`, `ui → @/components/ui`, `utils → @/lib/utils`, `lib → @/lib`, `hooks → @/hooks`.
+  - `components/` — app-specific components alongside the shadcn `ui/` subfolder.
   - `providers/` — client providers (e.g. `theme-provider.tsx` wrapping `next-themes`).
   - `lib/utils.ts` — `cn()` (clsx + tailwind-merge).
   - `styles/globals.css` — Tailwind v4 entry and theme tokens.

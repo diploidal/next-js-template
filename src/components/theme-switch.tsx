@@ -2,7 +2,7 @@
 import { MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { ToggleGroup, ToggleGroupItem } from "@/shadcn/ui/toggle-group";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 export const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false);
