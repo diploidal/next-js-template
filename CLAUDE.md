@@ -26,7 +26,7 @@ Add shadcn components with `bunx --bun shadcn@latest add <name>` — they land i
 
 ## Architecture
 
-Next.js 16 App Router + React 19 + TypeScript, styled with Tailwind v4 and shadcn/ui ("new-york" style, `neutral` base, CSS variables).
+Next.js 16 App Router + React 19 + TypeScript, styled with Tailwind v4 and shadcn/ui ("base-nova" style, `neutral` base, CSS variables). UI primitives under `src/components/ui/` are built on [Base UI](https://base-ui.com/) (`@base-ui/react/*`), not Radix.
 
 - **React Compiler is enabled** (`next.config.ts` → `reactCompiler: true`, `babel-plugin-react-compiler` in devDeps). Do not manually add `useMemo`/`useCallback`/`memo` for performance — the compiler handles memoization. Hand-rolled memoization may conflict with it.
 - **Path alias**: `@/*` → `src/*` (see `tsconfig.json`).
@@ -38,7 +38,7 @@ Next.js 16 App Router + React 19 + TypeScript, styled with Tailwind v4 and shadc
   - `lib/utils.ts` — `cn()` (clsx + tailwind-merge).
   - `styles/globals.css` — Tailwind v4 entry and theme tokens.
 - **Icons**: `lucide-react` (configured in `components.json`).
-- **Theming**: `next-themes` with light/dark/system, driven by `ThemeProvider` in `providers/` and toggled via `components/theme-switch.tsx`.
+- **Theming**: `next-themes` with light/dark/system, driven by `ThemeProvider` in `providers/` and toggled via `components/theme-switch.tsx`. `next-themes` writes `data-theme="light"` / `data-theme="dark"` on `<html>` (its default `attribute`), and `src/styles/globals.css` scopes theme tokens under matching `[data-theme="..."]` selectors. The Tailwind `dark` variant is wired to the same selector — `@custom-variant dark (&:is([data-theme="dark"] *))`. `--radius` lives in `@theme inline` so it resolves on `:root` regardless of theme — keep any tokens that should never be theme-conditional there.
 
 ## Tooling notes
 

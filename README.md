@@ -8,7 +8,7 @@ A template to quickly bootstrap Next.js projects with modern tooling.
 - [Bun](https://bun.sh/) as package manager and runtime
 - [Tailwind CSS v4](https://tailwindcss.com/)
 - [Oxlint](https://github.com/oxc-project/oxc) + [Oxfmt](https://github.com/oxc-project/oxc) — fast Oxc-based linter & formatter
-- [Shadcn UI](https://ui.shadcn.com/) ("new-york" style) with [Lucide](https://lucide.dev/) icons
+- [Shadcn UI](https://ui.shadcn.com/) ("base-nova" style) on top of [Base UI](https://base-ui.com/) primitives, with [Lucide](https://lucide.dev/) icons
 - [Next Themes](https://www.npmjs.com/package/next-themes) — Light / Dark / System
 - GitLab CI pipeline with Vercel production deploy on `main`
 

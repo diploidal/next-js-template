@@ -17,7 +17,7 @@ export const ThemeSwitch = () => {
   }
 
   return (
-    <ToggleGroup size="lg" type="single" className="z-10 text-muted-foreground">
+    <ToggleGroup size="lg" variant="outline" className="z-10 text-muted-foreground">
       <ToggleGroupItem
         value="light"
         aria-label="Toggle light theme"
