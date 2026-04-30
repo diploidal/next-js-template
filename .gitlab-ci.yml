@@ -1,9 +1,13 @@
 image: oven/bun:latest
 
+default:
+  interruptible: true
+
 stages:
   - install
   - quality
   - build
+  - deploy
 
 variables:
   NEXT_TELEMETRY_DISABLED: "1"
@@ -12,12 +16,14 @@ variables:
 
 workflow:
   auto_cancel:
-    on_new_commit: none
+    on_new_commit: interruptible
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
     - when: always
 
+# Top-level cache: jobs inherit pull-only by default.
+# install_dependencies and build jobs override to pull-push so they can update it.
 cache:
   key:
     files:
@@ -73,11 +79,16 @@ type-check:
 # BUILD
 # ====================================================
 
-.build_template: &build_config
+# Validation build: runs on every branch including main, only after quality checks pass.
+# On main, this acts as a pre-deploy safety net before Vercel deploy.
+build:validate:
   stage: build
   needs:
     - job: install_dependencies
       optional: true
+    - lint
+    - format
+    - type-check
   cache:
     key:
       files:
@@ -86,41 +97,30 @@ type-check:
       - node_modules/
       - .next/cache/
     policy: pull-push
-
-# Validation build: runs on all branches except main. No deploy.
-build:validate:
-  <<: *build_config
-  rules:
-    - if: $CI_COMMIT_BRANCH != "main"
   script:
-    - echo "Running standard build for validation (no Vercel deploy)."
+    - echo "Running standard build for validation."
     - bun run build
-  artifacts:
-    paths:
-      - .next/
-    expire_in: 1 day
 
-# Production build + deploy: runs only on main.
-build_deploy:vercel_production:
-  <<: *build_config
+# ====================================================
+# DEPLOY
+# ====================================================
+
+# Production deploy: runs only on main, after build:validate passes.
+# build:validate transitively gates this on install + lint + format + type-check.
+# Requires VERCEL_TOKEN as a masked + protected CI/CD variable.
+# Requires `main` to be a protected branch in repo settings.
+deploy:vercel_production:
+  stage: deploy
+  interruptible: false # never cancel a production deploy mid-flight
   needs:
-    - job: install_dependencies
-      optional: true
-    - lint
-    - format
-    - type-check
+    - job: build:validate
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
   resource_group: production
+  cache: [] # Vercel CLI handles its own dependencies — no need to pull our cache
   script:
     - echo "Building for Vercel Production..."
-    - bun install --global vercel
-    - vercel pull --yes --environment=production --token=$VERCEL_TOKEN
-    - vercel build --prod --token=$VERCEL_TOKEN
+    - bunx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+    - bunx vercel build --prod --token=$VERCEL_TOKEN
     - echo "Deploying prebuilt artifacts to Vercel..."
-    - vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
-  artifacts:
-    paths:
-      - .vercel/output
-      - .next/
-    expire_in: 1 day
+    - bunx vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
